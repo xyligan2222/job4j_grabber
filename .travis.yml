@@ -12,7 +12,7 @@ after_success:
 # Здесь Вставляем свой токен для интеграции codecov
 env:
     global:
-      - CODECOV_TOKEN="b2cb67e9-12f0-4a70-918a-f699f53da3bf"
+      - CODECOV_TOKEN="cec8c962-9a91-4dac-ac24-9049b8ac5838"
 
 # Отправлять уведомление на почту xyligan2222@yandex.ru если сборка упала
 
@@ -21,4 +21,4 @@ notifications:
     recipients:
       -xyligan2222@yandex.ru
     on_success: never # default: change
-    on_failure: always # defa,,ult: always
+    on_failure: always # default: always
