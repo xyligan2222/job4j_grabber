@@ -14,17 +14,18 @@ import static org.quartz.SimpleScheduleBuilder.*;
 
 public class AlertRabbit {
 
+
     public static void main(String[] args) {
         try (ConfigDB configDB = new ConfigDB("rabbit.properties")) {
-            configDB.init();
+           // configDB.init();
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             JobDataMap data = new JobDataMap();
             data.put("connection", configDB.init());
             JobDetail job = newJob(Rabbit.class).build();
             SimpleScheduleBuilder times = simpleSchedule()
-                    .withIntervalInSeconds(10)
-                   // .withIntervalInSeconds((configDB.getProperties("rabbit.interval")))
+                    //.withIntervalInSeconds(10)
+                   .withIntervalInSeconds((configDB.getProperties("rabbit.interval")))
                     .repeatForever();
             Trigger trigger = newTrigger()
                     .startNow()
@@ -47,9 +48,11 @@ public class AlertRabbit {
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
             System.out.println("test");
-            try (Connection connection = (Connection) context.getJobDetail().getJobDataMap().get("connect")) {
-                PreparedStatement st = connection.prepareStatement("insert into rabbit (created_date) values (?)");
-                st.setTimestamp(1, new java.sql.Timestamp(System.currentTimeMillis()));
+           Connection cn = null;
+           //Connection connection = (Connection) context.getJobDetail().getJobDataMap().get("connect");
+            try (PreparedStatement st = cn.prepareStatement("insert into rabbit (created_date) values (?);", Statement.RETURN_GENERATED_KEYS)) {
+               // st.setTimestamp(1, new java.sql.Timestamp(System.currentTimeMillis()));
+                st.setTimestamp(1, Timestamp.valueOf("2005-12-31 06:30:00"));
                 st.executeUpdate();
             } catch (SQLException ex) {
                 ex.printStackTrace();
