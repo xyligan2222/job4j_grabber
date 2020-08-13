@@ -6,16 +6,14 @@ import java.util.Objects;
 public class Post {
     private String url;
     private String description;
-    private String author;
     private Timestamp createDate;
 
     public Post() {
     }
 
-    public Post(String url, String description, String author, Timestamp createDate) {
+    public Post(String url, String description, Timestamp createDate) {
         this.url = url;
         this.description = description;
-        this.author = author;
         this.createDate = createDate;
     }
 
@@ -33,14 +31,6 @@ public class Post {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public Timestamp getCreateDate() {
@@ -62,12 +52,11 @@ public class Post {
         Post post = (Post) o;
         return Objects.equals(url, post.url)
                 && Objects.equals(description, post.description)
-                && Objects.equals(author, post.author)
                 && Objects.equals(createDate, post.createDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(url, description, author, createDate);
+        return Objects.hash(url, description, createDate);
     }
 }

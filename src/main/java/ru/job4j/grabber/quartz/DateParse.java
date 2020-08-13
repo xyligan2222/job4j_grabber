@@ -7,14 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DateParse {
-    String toDayDate = null;
-    String toDayTime = null;
-    String yesterdayTime = null;
-    String yesterdayDate = null;
-    String normalDate = null;
-    String normalTime = null;
-    Boolean toDay = false;
-    Boolean yesterday = false;
+    private String toDayDate = null;
+    private String toDayTime = null;
+    private String yesterdayTime = null;
+    private String yesterdayDate = null;
+    private String normalDate = null;
+    private String normalTime = null;
+    private Boolean toDay = false;
+    private Boolean yesterday = false;
     private static HashMap<String, Integer> map = new HashMap<>() {
         {
             put("янв", 1);
@@ -35,47 +35,48 @@ public class DateParse {
     /*
     this method determines the date type
      */
-    public void parseString(String dateTime) throws IOException {
+    public Timestamp parseString(String dateTime) throws IOException {
         String[] strings = dateTime.toLowerCase().split(",");
+        Timestamp date;
            if (strings.length > 1) {
                if (strings[0].equals("сегодня")) {
                    toDay = true;
                    yesterday = false;
                    toDayDate = strings[0];
                    toDayTime = strings[1];
-                   parseToDay();
+                  return parseToDay();
                } else if (strings[0].equals("вчера")) {
                    yesterdayDate = strings[0];
                    yesterdayTime = strings[1];
                    toDay = false;
                    yesterday = true;
-                   parseYesterday();
+                   return parseYesterday();
                } else {
                    normalDate = strings[0];
                    normalTime = strings[1];
                    toDay = false;
                    yesterday = false;
-                   parseNormalDay(normalDate, normalTime);
+                   return parseNormalDay(normalDate, normalTime);
                }
            } else {
                throw new IOException("the date is incorrect");
            }
 
-       }
+    }
 
        /*
         this method return Date now
         */
 
     private Timestamp parseToDay() {
-        System.out.println(Timestamp.valueOf(parseDay(toDayTime, toDay)));
+        //System.out.println(Timestamp.valueOf(parseDay(toDayTime, toDay)));
         return Timestamp.valueOf(parseDay(toDayTime, toDay));
     }
     /*
         this method return Date minus 1 Day
     */
     private Timestamp parseYesterday() {
-        System.out.println(Timestamp.valueOf(parseDay(yesterdayTime, yesterday).minusDays(1)));
+        //System.out.println(Timestamp.valueOf(parseDay(yesterdayTime, yesterday).minusDays(1)));
        return Timestamp.valueOf(parseDay(yesterdayTime, yesterday).minusDays(1));
     }
 
@@ -112,7 +113,7 @@ public class DateParse {
         String monthParse = parseYearMonthDay[1];
         month = compareMonth(monthParse);
         dayOfMonth = Integer.parseInt(parseYearMonthDay[0]);
-        System.out.println(Timestamp.valueOf(LocalDateTime.of(year, month, dayOfMonth, Integer.parseInt(parseHourMinute[0]), Integer.parseInt(parseHourMinute[1]))));
+       // System.out.println(Timestamp.valueOf(LocalDateTime.of(year, month, dayOfMonth, Integer.parseInt(parseHourMinute[0]), Integer.parseInt(parseHourMinute[1]))));
         return Timestamp.valueOf(LocalDateTime.of(year, month, dayOfMonth, Integer.parseInt(parseHourMinute[0]), Integer.parseInt(parseHourMinute[1])));
 
     }
