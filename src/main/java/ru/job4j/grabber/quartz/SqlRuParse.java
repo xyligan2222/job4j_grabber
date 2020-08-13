@@ -8,13 +8,26 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class SqlRuParse {
     public static void main(String[] args) throws Exception {
-        Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers").get();
-        List<String> listURL = getUrl(doc);
-        List<String> listDate = getDate(doc);
-        for (int i = 0; i < listDate.size(); i++) {
-            System.out.println(listURL.get(i) + System.lineSeparator() + listDate.get(i));
+        int page = 5;
+        int count = 1;
+        List<String> listURLCommon = new ArrayList<>();
+        List<String> listDateCommon = new ArrayList<>();
+        List<String> listCommon = new ArrayList<>();
+        while (count <= page) {
+            Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + count).get();
+            List<String> listURL = getUrl(doc);
+            List<String> listDate = getDate(doc);
+            listURLCommon.addAll(listURL);
+            listDateCommon.addAll(listDate);
+            count++;
+        }
+
+        for (int i = 0; i < listURLCommon.size(); i++) {
+            listCommon.add(listURLCommon.get(i) + System.lineSeparator() + listDateCommon.get(i));
+            System.out.println(listURLCommon.get(i) + System.lineSeparator() + listDateCommon.get(i));
         }
     }
 
