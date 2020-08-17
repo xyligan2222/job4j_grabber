@@ -12,5 +12,5 @@ public interface Parse {
     this method loads the description one posts
     @param URL from post
      */
-    Post detail(String link);
+    List<Post> detail(String link);
 }

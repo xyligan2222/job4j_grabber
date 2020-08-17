@@ -7,9 +7,11 @@ public interface Store {
    /*
     this method saves the post in the database
     */
-    void save(Post post);
+    void save(List<Post> post);
     /*
     this method get the post in the database
     */
     List<Post> getAll();
+
+    Post findById(String id);
 }
