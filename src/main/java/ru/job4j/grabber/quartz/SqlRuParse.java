@@ -34,10 +34,10 @@ public class SqlRuParse implements Parse {
             for (int i = 1; i <= 5; i++) {
                 Document doc = Jsoup.connect(String.format("%s%d", link, i)).get();
                 Elements tableRows = doc.select(".forumTable").first().getElementsByTag("tr");
-                for (Element row : tableRows) {
-                    Element postListTopic = row.child(POST_LIST_TOPIC);
+                for (int j = 2; j < tableRows.size(); j++) {
+                    Element postListTopic = tableRows.get(j).child(POST_LIST_TOPIC);
                     if (postListTopic.hasClass("postslisttopic")) {
-                        Node date = row.child(DATE_TIME).childNode(0);
+                        Node date = tableRows.get(j).child(DATE_TIME).childNode(0);
                         Timestamp createDate = dateParse.parseString(String.valueOf(date));
                         Element linkElement = postListTopic.child(LINK);
                         String links = linkElement.attr("href");
@@ -45,7 +45,9 @@ public class SqlRuParse implements Parse {
                         post.add(new Post(name, links, " ", createDate));
                     }
                 }
-            }
+
+                }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,9 +67,12 @@ public class SqlRuParse implements Parse {
                 String name = comments.first().select(".messageHeader").text();
                 String date = comments.last().select(".msgFooter").text();
                 date = date.substring(0, date.indexOf('[') - 1);
-                post.add(new Post(
-                        name, posts.getUrl(), description, dateParse.parseString(date))
-                );
+                if (description.toLowerCase().equals("java")) {
+                    post.add(new Post(
+                            name, posts.getUrl(), description, dateParse.parseString(date))
+                    );
+                }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
