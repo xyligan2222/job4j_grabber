@@ -67,7 +67,7 @@ public class SqlRuParse implements Parse {
                 String name = comments.first().select(".messageHeader").text();
                 String date = comments.last().select(".msgFooter").text();
                 date = date.substring(0, date.indexOf('[') - 1);
-                if (description.toLowerCase().equals("java")) {
+                if (description.toLowerCase().contains("java")) {
                     post.add(new Post(
                             name, posts.getUrl(), description, dateParse.parseString(date))
                     );

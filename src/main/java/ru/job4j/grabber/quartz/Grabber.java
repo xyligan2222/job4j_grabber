@@ -24,7 +24,7 @@ public class Grabber implements Grab {
     }
 
     public void cfg() throws IOException {
-        try (InputStream in = new FileInputStream(new File("C:\\projects\\grabber\\src\\main\\resources\\grab.properties"))) {
+        try (InputStream in = PsqlStore.class.getClassLoader().getResourceAsStream("grab.properties")) {
             cfg.load(in);
         }
     }
